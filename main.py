@@ -36,7 +36,11 @@ def create_board():
 
 def draw_board(board):
     #thius is for the background of the boaard.
-    pass
+    for row in range(row_count):
+        for col in range(col_count):
+            pygame.draw.rect(screen, blue, (col * square_size, row * square_size, square_size, square_size))
+            pygame.draw.rect(screen, black, (col * square_size, row * square_size, square_size, square_size), 1)
+    pygame.display.update()
     
 
 def create_floor():
