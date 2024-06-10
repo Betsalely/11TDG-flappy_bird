@@ -41,7 +41,10 @@ def draw_board(board):
 
 def create_floor():
     #drawing floor
-    pass
+    for col in range(col_count):
+        pygame.draw.rect(screen, ((col*row_count),0,0), (col * square_size, (row_count - 1) * square_size, square_size, square_size))
+        pygame.draw.rect(screen, black, (col * square_size, (row_count - 1) * square_size, square_size, square_size), 1)
+    pygame.display.update()
     
 
 board = create_board()
