@@ -87,7 +87,7 @@ def draw_player(current_pos, direction):
     draw_board(board)
     draw_floor(floor_pattern)
 
-    #actual player
+    # Due to limitations in pygame, our character cant be to detailed so instead of complicating the character we're just going to make it a yellow cube.
     pygame.draw.rect(screen, yellow, (6 * square_size, current_pos * square_size, square_size, square_size))
     pygame.draw.rect(screen, black,  (6 * square_size, current_pos * square_size, square_size, square_size), 1)
     pygame.display.update()
