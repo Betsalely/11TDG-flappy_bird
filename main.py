@@ -3,7 +3,7 @@ import numpy as np
 
 
 #this is how many columns and rows there in our grid/screen
-col_count = 13
+col_count = 23
 row_count = 18
 
 #we are declaring the RGB values for the colours before we use them.
