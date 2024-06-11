@@ -98,6 +98,8 @@ def draw_player(current_pos, direction):
 floor_pattern = [((col * 18) % 256, 0, 0) for col in range(col_count)]
     
 
+    
+
 board = create_board()
 draw_board(board)
 draw_floor(floor_pattern)
@@ -121,5 +123,6 @@ while True:
     if not upper:
         current_pos = draw_player(current_pos, "DOWN")
 
-    #so time passes
     clock.tick(5)
+
+pygame.quit()
