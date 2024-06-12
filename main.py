@@ -9,7 +9,7 @@ row_count = 18
 #we are declaring the RGB values for the colours before we use them.
 
 #for the sky
-blue = (0, 0, 200)
+blue = (45, 100, 245)
 
 #for the floor amd maybe the columns
 red = (200, 0, 0)
