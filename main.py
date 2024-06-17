@@ -130,7 +130,9 @@ pygame.quit()
 
 
 
-#please add some example code on how to draw a square in pygame. myabe do like what each parameter means and then do an example using some
+#please add some example code on how to draw a square in pygame. 
+#maybe do like what each parameter 
+#means and then do an example using some
 # of our variables like square_size.
 
 
