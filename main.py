@@ -138,3 +138,15 @@ pygame.quit()
 
 
 # PUT CODE HERE
+
+#pygame.draw.rect(*1, *2, (*3,*4,*5,*6))
+
+#*1 = where we draw the square (like screen)
+# *2 = colour. ususlly a constant whose RGB is previsouly established
+# *3 and *4 = the actually posotion of the square. in loops you can mutilpy it by the
+# rows and cols
+# *5 and *6 = height and width of square. IN our code we have a constant called 
+# square_size so we use that. 
+
+
+
