@@ -57,13 +57,13 @@ def draw_floor(floor_pattern):
         pygame.draw.rect(screen, color, (col * square_size, (row_count - 1) * square_size, square_size, square_size))
         pygame.draw.rect(screen, black, (col * square_size, (row_count - 1) * square_size, square_size, square_size), 1)
 
-def move_floor(floor_pattern):
+def move_floor(floor_pattern, column_pos, gap_start):
     screen.fill(black)  
     draw_board(board)   # Redraw the board
 
     # restarts floor pattern
     floor_pattern = floor_pattern[1:] + floor_pattern[:1]
-    #I dont't know how to change the colomn pattern to move it
+    column_pos = (column_pos - 1) % col_count
 
     draw_floor(floor_pattern)
     draw_pipes(colomn_pos, gapstart)
@@ -130,7 +130,11 @@ while True:
                 upper = True
 
 
-    floor_pattern = move_floor(floor_pattern)
+    floor_pattern, column_pos = move_floor(floor_pattern, column_pos, gap_start)
+    if column_pos == col_count - 1: 
+        gap_start = np.random.randint(0, row_count - 5)
+
+    
     #moves it down if spavce is not pressed
     if not upper:
         current_pos = draw_player(current_pos, "DOWN")
