@@ -3,7 +3,7 @@ import numpy as np
 
 
 #this is how many columns and rows there in our grid/screen
-col_count = 23
+col_count = 25
 row_count = 18
 
 #we are declaring the RGB values for the colours before we use them.
@@ -63,10 +63,12 @@ def move_floor(floor_pattern):
 
     # restarts floor pattern
     floor_pattern = floor_pattern[1:] + floor_pattern[:1]
+    #I dont't know how to change the colomn pattern to move it
 
     draw_floor(floor_pattern)
+    draw_pipes(colomn_pos, gapstart)
     pygame.display.update()
-    return floor_pattern
+    return floor_pattern, column_position
 
 #checks if the player can go up
 def possible_up():
@@ -86,7 +88,7 @@ def draw_player(current_pos, direction):
     screen.fill(black)
     draw_board(board)
     draw_floor(floor_pattern)
-    draw_pipes(column_position)
+    draw_pipes(column_position,gap_start)
 
     #actual player
     pygame.draw.rect(screen, yellow, (6 * square_size, current_pos * square_size, square_size, square_size))
@@ -95,12 +97,14 @@ def draw_player(current_pos, direction):
 
     return current_pos
 
-def draw_pipes(column_postion):
+def draw_pipes(column_postion,gap_start):
     for row in range(row_count):
-        pygame.draw.rect(screen, red, (column_postion * square_size, row * square_size, square_size, square_size))
-        pygame.draw.rect(screen, black, (column_postion * square_size, row * square_size, square_size, square_size),1)
+        if row < gap_start or row >= gap_start + 4: 
+            pygame.draw.rect(screen, red, (column_postion * square_size, row * square_size, square_size, square_size))
+            pygame.draw.rect(screen, black, (column_postion * square_size, row * square_size, square_size, square_size),1)
 
-#for floor gradient
+gap_start=np.random.randint(0,row_count -5)
+#randomly creates the gap
 floor_pattern = [((col * 18) % 256, 0, 0) for col in range(col_count)]
 column_postion = col_count - 1 
 # Start column at the rightmost position
@@ -110,7 +114,7 @@ column_postion = col_count - 1
 board = create_board()
 draw_board(board)
 draw_floor(floor_pattern)
-draw_pipes(column_position)
+draw_pipes(column_position,gap_start)
 
 #main game loop
 while True:
