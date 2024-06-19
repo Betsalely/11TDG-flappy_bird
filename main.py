@@ -86,6 +86,7 @@ def draw_player(current_pos, direction):
     screen.fill(black)
     draw_board(board)
     draw_floor(floor_pattern)
+    draw_pipes(column_position)
 
     #actual player
     pygame.draw.rect(screen, yellow, (6 * square_size, current_pos * square_size, square_size, square_size))
@@ -94,15 +95,22 @@ def draw_player(current_pos, direction):
 
     return current_pos
 
+def draw_pipes(column_postion):
+    for row in range(row_count):
+        pygame.draw.rect(screen, red, (column_postion * square_size, row * square_size, square_size, square_size))
+        pygame.draw.rect(screen, black, (column_postion * square_size, row * square_size, square_size, square_size),1)
+
 #for floor gradient
 floor_pattern = [((col * 18) % 256, 0, 0) for col in range(col_count)]
-    
+column_postion = col_count - 1 
+# Start column at the rightmost position
 
     
 
 board = create_board()
 draw_board(board)
 draw_floor(floor_pattern)
+draw_pipes(column_position)
 
 #main game loop
 while True:
