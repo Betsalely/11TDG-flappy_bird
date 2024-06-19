@@ -52,7 +52,6 @@ def draw_board(board):
 
 def draw_floor(floor_pattern):
     for col in range(col_count):
-        pygame.draw.rect(screen, ((col*18),0,0), (col * square_size, (row_count - 1) * square_size, square_size, square_size))
         color = floor_pattern[col]
         pygame.draw.rect(screen, color, (col * square_size, (row_count - 1) * square_size, square_size, square_size))
         pygame.draw.rect(screen, black, (col * square_size, (row_count - 1) * square_size, square_size, square_size), 1)
@@ -66,9 +65,9 @@ def move_floor(floor_pattern, column_pos, gap_start):
     column_pos = (column_pos - 1) % col_count
 
     draw_floor(floor_pattern)
-    draw_pipes(colomn_pos, gapstart)
+    draw_pipes(column_pos, gap_start)
     pygame.display.update()
-    return floor_pattern, column_position
+    return floor_pattern, column_pos
 
 #checks if the player can go up
 def possible_up():
