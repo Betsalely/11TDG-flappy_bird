@@ -19,9 +19,12 @@ black = (0, 0, 0)
 
 #player
 yellow = (200, 200, 0)
+orange = (255, 150,0)
 
 #score
 white = (255,255,255)
+
+
 
 #this is how big our squares are. we could make them samller but i think bigger squares are great 
 #for our end users. the rest if the code is just for the peremeters of the screen
@@ -34,6 +37,7 @@ size = (width, height)
 #player y position (x position doesnt change
 current_pos = 7
 score = 0
+highscore = 0
 
 #starts pygame, sets up the csreen and the name for out app/game.
 pygame.init()
@@ -85,30 +89,48 @@ def possible_up():
     return current_pos > 0
 
 #creates a player and moves it up or down. += means down and vice versa because of how the board is drawn
-def draw_player(current_pos, direction):
-    if direction == 'UP':
-        if possible_up():
-            current_pos -= 1
+def draw_player(current_pos, direction): 
+    if direction == 'UP': 
+        if possible_up(): current_pos -= 1 
 
-    else:
+    else: 
         if current_pos < row_count - 2: 
-            current_pos += 1
+            current_pos += 1 
+    # empty screen 
+    screen.fill(black) 
+    draw_board(board) 
+    draw_floor(floor_pattern) 
+    draw_pipes(column_pos, gap_start) 
+    
+    #ACTUAL PLAYER
+    #yellow body
+    player_x = 6 * square_size 
+    player_y = current_pos * square_size 
+    pygame.draw.rect(screen, yellow, (player_x, player_y, square_size, square_size)) 
+    pygame.draw.rect(screen, black, (player_x, player_y, square_size, square_size), 1) 
 
-    #empty screen
-    screen.fill(black)
-    draw_board(board)
-    draw_floor(floor_pattern)
-    draw_pipes(column_pos,gap_start)
+    # Draw the orange beak 
+    beak_width = square_size // 4 
+    beak_height = square_size // 2 
+    beak_x = player_x + square_size-(square_size/10) 
+    beak_y = player_y + (square_size // 4) 
+    pygame.draw.polygon(screen, orange, [(beak_x, beak_y), (beak_x + beak_width, beak_y + beak_height // 2), (beak_x, beak_y + beak_height)]) 
+
+    #eye black
+    radius = square_size//5
+    eye_center_x = player_x+square_size//2
+    eye_center_y = player_y+square_size//2 - 5
+    pygame.draw.circle(screen, black, (eye_center_x, eye_center_y), radius)
+
+    #eye white
+    radius = square_size//10
+    eye_center_x = player_x+square_size//2 + 2
+    eye_center_y = player_y+square_size//2 - 5
+    pygame.draw.circle(screen, white, (eye_center_x, eye_center_y), radius)
 
 
-
-    #actual player
-    pygame.draw.rect(screen, yellow, (6 * square_size, current_pos * square_size, square_size, square_size))
-    pygame.draw.rect(screen, black, (6 * square_size, current_pos * square_size, square_size, square_size), 1)
-    draw_score(score)
-
-    pygame.display.update()
-
+    draw_score(score) 
+    pygame.display.update() 
     return current_pos
 
 def draw_pipes(column_pos,gap_start):
