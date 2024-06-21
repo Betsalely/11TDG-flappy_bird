@@ -20,6 +20,9 @@ black = (0, 0, 0)
 #player
 yellow = (200, 200, 0)
 
+#score
+white = (255,255,255)
+
 #this is how big our squares are. we could make them samller but i think bigger squares are great 
 #for our end users. the rest if the code is just for the peremeters of the screen
 square_size = 40
@@ -30,12 +33,14 @@ size = (width, height)
 
 #player y position (x position doesnt change
 current_pos = 7
+score = 0
 
 #starts pygame, sets up the csreen and the name for out app/game.
 pygame.init()
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Pygame Board")
+font = pygame.font.SysFont(None, 36)
 
 def create_board():
     board = np.zeros((row_count, col_count))
@@ -57,6 +62,7 @@ def draw_floor(floor_pattern):
         pygame.draw.rect(screen, black, (col * square_size, (row_count - 1) * square_size, square_size, square_size), 1)
 
 def move_floor(floor_pattern, column_pos, gap_start):
+    global score
     screen.fill(black)  
     draw_board(board)   # Redraw the board
 
@@ -64,8 +70,13 @@ def move_floor(floor_pattern, column_pos, gap_start):
     floor_pattern = floor_pattern[1:] + floor_pattern[:1]
     column_pos = (column_pos - 1) % col_count
 
+    if column_pos == 6:  # Hwen  the player go through collumn
+        score += 1
+
     draw_floor(floor_pattern)
     draw_pipes(column_pos, gap_start)
+    draw_score(score)
+
     pygame.display.update()
     return floor_pattern, column_pos
 
@@ -89,9 +100,13 @@ def draw_player(current_pos, direction):
     draw_floor(floor_pattern)
     draw_pipes(column_pos,gap_start)
 
+
+
     #actual player
     pygame.draw.rect(screen, yellow, (6 * square_size, current_pos * square_size, square_size, square_size))
     pygame.draw.rect(screen, black, (6 * square_size, current_pos * square_size, square_size, square_size), 1)
+    draw_score(score)
+
     pygame.display.update()
 
     return current_pos
@@ -110,6 +125,11 @@ def check_collision(current_pos, column_pos, gap_start):
         return True    
     return False
 
+def draw_score(score):
+    score_text = font.render(f"Score: {score}", True, white)
+    screen.blit(score_text, (10, 10))
+
+
 gap_start=np.random.randint(0,row_count -5)
 #randomly creates the gap
 floor_pattern = [((col * 18) % 256, 0, 0) for col in range(col_count)]
@@ -122,6 +142,8 @@ board = create_board()
 draw_board(board)
 draw_floor(floor_pattern)
 draw_pipes(column_pos,gap_start)
+draw_score(score)
+
 
 #main game loop
 while True:
@@ -151,7 +173,7 @@ while True:
 
     clock.tick(5)
 
-clock.tick(10)
+
 pygame.quit()
 
 
