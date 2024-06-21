@@ -69,7 +69,7 @@ def move_floor(floor_pattern, column_pos, gap_start):
     pygame.display.update()
     return floor_pattern, column_pos
 
-#checks if the player can go up
+#checks uf the player can go up
 def possible_up():
     return current_pos > 0
 
@@ -101,6 +101,14 @@ def draw_pipes(column_pos,gap_start):
         if row < gap_start or row >= gap_start + 4: 
             pygame.draw.rect(screen, red, (column_pos * square_size, row * square_size, square_size, square_size))
             pygame.draw.rect(screen, black, (column_pos * square_size, row * square_size, square_size, square_size),1)
+
+def check_collision(current_pos, column_pos, gap_start):
+    if column_pos == 6:
+        if current_pos < gap_start or current_pos >= gap_start + 4:
+            return True
+    if current_pos >= 16:
+        return True    
+    return False
 
 gap_start=np.random.randint(0,row_count -5)
 #randomly creates the gap
@@ -138,8 +146,12 @@ while True:
     if not upper:
         current_pos = draw_player(current_pos, "DOWN")
 
+        if check_collision(current_pos, column_pos, gap_start):
+            break
+
     clock.tick(5)
 
+clock.tick(10)
 pygame.quit()
 
 
