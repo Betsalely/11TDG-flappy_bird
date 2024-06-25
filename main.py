@@ -45,6 +45,7 @@ screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 pygame.display.set_caption("Pygame Board")
 font = pygame.font.SysFont(None, 36)
+small_font = pygame.font.SysFont(None, 24)
 
 def create_board():
     board = np.zeros((row_count, col_count))
@@ -151,6 +152,35 @@ def draw_score(score):
     score_text = font.render(f"Score: {score}", True, white)
     screen.blit(score_text, (10, 10))
 
+def draw_start_screen():
+    screen.fill(black)
+    title_text = font.render("Pygame Board", True, white)
+    start_text = small_font.render("Press Enter to Start", True, white)
+    screen.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 2 - title_text.get_height() // 2 - 20))
+    screen.blit(start_text, (width // 2 - start_text.get_width() // 2, height // 2 - start_text.get_height() // 2 + 20))
+    pygame.display.update()
+
+def draw_game_over_screen(score, highscore):
+    screen.fill(black)
+    game_over_text = font.render("Game Over", True, white)
+    score_text = small_font.render(f"Score: {score}", True, white)
+    highscore_text = small_font.render(f"Highscore: {highscore}", True, white)
+    retry_text = small_font.render("Press Enter to Retry", True, white)
+    screen.blit(game_over_text, (width // 2 - game_over_text.get_width() // 2, height // 2 - game_over_text.get_height() // 2 - 40))
+    screen.blit(score_text, (width // 2 - score_text.get_width() // 2, height // 2 - score_text.get_height() // 2 - 10))
+    screen.blit(highscore_text, (width // 2 - highscore_text.get_width() // 2, height // 2 - highscore_text.get_height() // 2 + 20))
+    screen.blit(retry_text, (width // 2 - retry_text.get_width() // 2, height // 2 - retry_text.get_height() // 2 + 50))
+    pygame.display.update()
+
+def reset_game():
+    global current_pos, score, gap_start, floor_pattern, column_pos, board
+    current_pos = 7
+    score = 0
+    gap_start = np.random.randint(0, row_count - 5)
+    floor_pattern = [((col * 18) % 256, 0, 0) for col in range(col_count)]
+    column_pos = col_count - 1
+    board = create_board()
+
 
 gap_start=np.random.randint(0,row_count -5)
 #randomly creates the gap
@@ -166,37 +196,60 @@ draw_floor(floor_pattern)
 draw_pipes(column_pos,gap_start)
 draw_score(score)
 
+game_running = False
+game_over = False
 
-#main game loop
+
 while True:
-    upper = False
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            break
-        elif event.type == pygame.KEYDOWN:
-            #space bar pressed
-            if event.key == pygame.K_SPACE:
-                current_pos = draw_player(current_pos, "UP")
-                upper = True
-
-
-    floor_pattern, column_pos = move_floor(floor_pattern, column_pos, gap_start)
-    if column_pos == col_count - 1: 
-        gap_start = np.random.randint(0, row_count - 5)
-
+    if not game_running and not game_over:
+        draw_start_screen()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    game_running = True
+                    reset_game()
     
-    #moves it down if spavce is not pressed
-    if not upper:
-        current_pos = draw_player(current_pos, "DOWN")
-
+    elif game_running:
+        upper = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    current_pos = draw_player(current_pos, "UP")
+                    upper = True
+        
+        floor_pattern, column_pos = move_floor(floor_pattern, column_pos, gap_start)
+        if column_pos == col_count - 1:
+            gap_start = np.random.randint(0, row_count - 5)
+        
+        if not upper:
+            current_pos = draw_player(current_pos, "DOWN")
+        
         if check_collision(current_pos, column_pos, gap_start):
-            break
+            game_running = False
+            game_over = True
+            if score > highscore:
+                highscore = score
+    
+    elif game_over:
+        draw_game_over_screen(score, highscore)
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    game_over = False
+                    game_running = True
+                    reset_game()
 
     clock.tick(5)
 
-
-pygame.quit()
 
 
 
