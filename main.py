@@ -129,6 +129,13 @@ def draw_player(current_pos, direction):
     eye_center_y = player_y+square_size//2 - 5
     pygame.draw.circle(screen, white, (eye_center_x, eye_center_y), radius)
 
+    crest_width = square_size // 5
+    crest_height = square_size // 5
+    crest_x = player_x + (square_size // 2) - (crest_width // 2)
+    crest_y = player_y - (crest_height // 2)
+    pygame.draw.ellipse(screen, red, (crest_x, crest_y, crest_width, crest_height))
+
+
 
     draw_score(score) 
     pygame.display.update() 
