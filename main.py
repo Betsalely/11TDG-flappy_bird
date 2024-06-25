@@ -107,7 +107,7 @@ def draw_player(current_pos, direction):
     #yellow body
     player_x = 6 * square_size 
     player_y = current_pos * square_size 
-    pygame.draw.rect(screen, yellow, (player_x, player_y, square_size, square_size)) 
+    pygame.draw.rect(screen, yellow, (player_x, player_y, square_size, square_size),border_radius=16) 
     pygame.draw.rect(screen, black, (player_x, player_y, square_size, square_size), 1) 
 
     # Draw the orange beak 
