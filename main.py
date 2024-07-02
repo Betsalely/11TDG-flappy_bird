@@ -23,6 +23,7 @@ orange = (255, 150,0)
 
 #score
 white = (255,255,255)
+green = (0,255,50)
 
 
 
@@ -162,16 +163,18 @@ def draw_score(score):
 def draw_start_screen():
     screen.fill(black)
     title_text = font.render("Pygame Board", True, white)
+    warning_text = small_font.render("WARNING: FLASHING LIGHTS", True, yellow)
     start_text = small_font.render("Press Enter to Start", True, white)
-    screen.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 2 - title_text.get_height() // 2 - 20))
-    screen.blit(start_text, (width // 2 - start_text.get_width() // 2, height // 2 - start_text.get_height() // 2 + 20))
+    screen.blit(title_text, (width // 2 - title_text.get_width() // 2, height // 2 - title_text.get_height() // 2 - 40))
+    screen.blit(warning_text, (width // 2 - warning_text.get_width() // 2, height // 2 - warning_text.get_height() // 2))
+    screen.blit(start_text, (width // 2 - start_text.get_width() // 2, height // 2 - start_text.get_height() // 2 + 40))
     pygame.display.update()
 
 def draw_game_over_screen(score, highscore):
     screen.fill(black)
-    game_over_text = font.render("Game Over", True, white)
+    game_over_text = font.render("Game Over", True, red)
     score_text = small_font.render(f"Score: {score}", True, white)
-    highscore_text = small_font.render(f"Highscore: {highscore}", True, white)
+    highscore_text = small_font.render(f"Highscore: {highscore}", True, green)
     retry_text = small_font.render("Press Enter to Retry", True, white)
     screen.blit(game_over_text, (width // 2 - game_over_text.get_width() // 2, height // 2 - game_over_text.get_height() // 2 - 40))
     screen.blit(score_text, (width // 2 - score_text.get_width() // 2, height // 2 - score_text.get_height() // 2 - 10))
